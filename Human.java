@@ -1,21 +1,27 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.io.Serializable;
 
-public class Human {
+class Human implements Serializable {
     private String name;
-    private String birthDate;
-    private String gender;
+    private LocalDate birthDate;
+    private Gender gender;
     private List<Human> children;
+    private List<Human> parents;
 
-    public Human(String name, String birthDate, String gender) {
+    public Human(String name, String birthDate, Gender gender) {
         this.name = name;
-        this.birthDate = birthDate;
+        this.birthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         this.gender = gender;
         this.children = new ArrayList<>();
+        this.parents = new ArrayList<>();
     }
 
     public void addChild(Human child) {
         children.add(child);
+        child.parents.add(this);
     }
 
     public List<Human> getChildren() {
@@ -26,13 +32,16 @@ public class Human {
         return name;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 }
 
-
+enum Gender {
+    Мужской,
+    Женский
+}
